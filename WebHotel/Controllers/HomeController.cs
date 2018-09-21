@@ -8,6 +8,7 @@ using WebHotel.Models;
 
 namespace WebHotel.Controllers
 {
+
     public class HomeController : Controller
     {
         public IActionResult Index()
