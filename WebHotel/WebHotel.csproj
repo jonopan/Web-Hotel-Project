@@ -5,6 +5,11 @@
     <UserSecretsId>aspnet-WebHotel-15DDE894-596F-4DC3-9918-EF18E05C8F77</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20181009001426_CustomerAndBooking.cs" />
+    <Compile Remove="Data\Migrations\20181009001426_CustomerAndBooking.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.8" />
