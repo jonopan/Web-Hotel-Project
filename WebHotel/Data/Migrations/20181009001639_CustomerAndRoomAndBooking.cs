@@ -96,7 +96,8 @@ namespace WebHotel.Data.Migrations
                 column: "UserId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade); */
+                onDelete: ReferentialAction.Cascade); 
+            */
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -1,15 +1,18 @@
 ﻿@model WebHotel.Models.Customer
 
+@using Microsoft.AspNetCore.Identity
+
+@inject UserManager<ApplicationUser> UserManager
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "My Details";
 }
 
-<h2>Delete</h2>
+<h2>My Details</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h4>Hi, @UserManager.GetUserName(User), your details are updated successfully as follows: </h4>
+<hr />
+
 <div>
-    <h4>Customer</h4>
-    <hr />
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.Surname)
@@ -30,10 +33,4 @@
             @Html.DisplayFor(model => model.PostCode)
         </dd>
     </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Email" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
 </div>
