@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - WebHotel</title>
+    <title>@ViewData["Title"] - Western Sydney Hotel</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -26,7 +26,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">WebHotel</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Western Sydney Hotel</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -34,10 +34,13 @@
                     @if (User.IsInRole("Customers"))
                     {
                         <li><a asp-area="" asp-controller="Customers" asp-action="MyDetails">My Details</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Index">Search Rooms</a></li>
+                        <li><a asp-area="" asp-controller="Bookings" asp-action="Create">Book A Room</a></li>
+                        <li><a asp-area="" asp-controller="Bookings" asp-action="Index">My Bookings</a></li>
                     }
                     @if (User.IsInRole("Admin"))
                     {
-                        <li><a asp-area="" asp-controller="Bookings" asp-action="Index">Manage Bookings</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Index">Statistics</a></li>
                     }
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
