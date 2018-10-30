@@ -33,6 +33,18 @@ namespace WebHotel.Controllers
             // Sort the Booking by specified order
             switch (sortOrder)
             {
+                case "checkIn_asc":
+                    bookings = bookings.OrderBy(m => m.CheckIn);
+                    break;
+                case "checkIn_desc":
+                    bookings = bookings.OrderByDescending(m => m.CheckIn);
+                    break;
+                case "checkOut_asc":
+                    bookings = bookings.OrderBy(m => m.CheckOut);
+                    break;
+                case "checkOut_desc":
+                    bookings = bookings.OrderByDescending(m => m.CheckOut);
+                    break;
                 case "cost_asc":
                     bookings = bookings.OrderBy(m => m.Cost);
                     break;
@@ -46,6 +58,8 @@ namespace WebHotel.Controllers
                     bookings = bookings.OrderByDescending(m => m.RoomID);
                     break;
             }
+            ViewData["CheckInOrder"] = sortOrder != "checkIn_asc" ? "checkIn_asc" : "checkIn_desc";
+            ViewData["CheckOutOrder"] = sortOrder != "checkOut_asc" ? "checkOut_asc" : "checkOut_desc";
             ViewData["NextCostOrder"] = sortOrder != "cost_asc" ? "cost_asc" : "cost_desc";
             ViewData["NextRoomOrder"] = sortOrder != "room_asc" ? "room_asc" : "room_desc";
             return View(await bookings.AsNoTracking().ToListAsync());

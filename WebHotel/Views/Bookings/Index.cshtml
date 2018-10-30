@@ -12,19 +12,23 @@
 <table class="table">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.CheckIn)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.CheckOut)
-                </th>
-                <th>
-                    <a asp-action="Index" asp-route-sortorder="@ViewData["NextCostOrder"]">
-                        @Html.DisplayNameFor(model => model.Cost)
-                    </a>
-                </th>
             <th>
-                @Html.DisplayNameFor(model => model.TheCustomer)
+                 <a asp-action="Index" asp-route-sortorder="@ViewData["CheckInOrder"]">
+                    @Html.DisplayNameFor(model => model.CheckIn)
+                  </a>
+            </th>
+            <th>
+                 <a asp-action="Index" asp-route-sortorder="@ViewData["CheckOutOrder"]">
+                    @Html.DisplayNameFor(model => model.CheckOut)
+                 </a>
+            </th>
+            <th>
+                 <a asp-action="Index" asp-route-sortorder="@ViewData["NextCostOrder"]">
+                    @Html.DisplayNameFor(model => model.Cost)
+                 </a>
+            </th>
+            <th>
+                    @Html.DisplayNameFor(model => model.TheCustomer)
             </th>
             <th>
                 <a asp-action="Index" asp-route-sortorder="@ViewData["NextRoomOrder"]">
