@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +12,7 @@ using WebHotel.Models;
 
 namespace WebHotel.Controllers
 {
+    [Authorize(Roles = "Customers")]
     public class BookingsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -20,10 +23,32 @@ namespace WebHotel.Controllers
         }
 
         // GET: Bookings
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index (string sortOrder)
         {
-            var applicationDbContext = _context.Booking.Include(b => b.TheCustomer).Include(b => b.TheRoom);
-            return View(await applicationDbContext.ToListAsync());
+            if (String.IsNullOrEmpty(sortOrder))
+            {
+                sortOrder = "cost_asc";
+            }
+            var bookings = (IQueryable<Booking>)_context.Booking.Include(b => b.TheCustomer).Include(b => b.TheRoom).Where(b => b.CustomerEmail == User.Identity.Name);
+            // Sort the Booking by specified order
+            switch (sortOrder)
+            {
+                case "cost_asc":
+                    bookings = bookings.OrderBy(m => m.Cost);
+                    break;
+                case "cost_desc":
+                    bookings = bookings.OrderByDescending(m => m.Cost);
+                    break;
+                case "room_asc":
+                    bookings = bookings.OrderBy(m => m.RoomID);
+                    break;
+                case "room_desc":
+                    bookings = bookings.OrderByDescending(m => m.RoomID);
+                    break;
+            }
+            ViewData["NextCostOrder"] = sortOrder != "cost_asc" ? "cost_asc" : "cost_desc";
+            ViewData["NextRoomOrder"] = sortOrder != "room_asc" ? "room_asc" : "room_desc";
+            return View(await bookings.AsNoTracking().ToListAsync());
         }
 
         // GET: Bookings/Details/5
@@ -63,6 +88,10 @@ namespace WebHotel.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Shows only the current login user booking details
+                string _email = User.FindFirst(ClaimTypes.Name).Value;
+                booking.CustomerEmail = _email;
+
                 var room = await _context.Room.SingleOrDefaultAsync(m => m.ID==booking.RoomID);
                 // calculate the total cost of booking
                 TimeSpan bookingDays = booking.CheckOut - booking.CheckIn;

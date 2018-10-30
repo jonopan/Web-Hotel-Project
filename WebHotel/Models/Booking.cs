@@ -14,7 +14,7 @@ namespace WebHotel.Models
         // foreign key
         public int RoomID { get; set; }
 
-        [Required]
+        //[Required]
         [DataType(DataType.EmailAddress)]
         [EmailAddress]
         // foreign key
