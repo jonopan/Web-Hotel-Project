@@ -4,9 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using WebHotel.Data;
 using WebHotel.Models;
+using WebHotel.Models.RoomsViewModels;
+// add this to support the type SqliteParameter 
+using Microsoft.Data.Sqlite;
 
 namespace WebHotel.Controllers
 {
@@ -148,6 +152,34 @@ namespace WebHotel.Controllers
         private bool RoomExists(int id)
         {
             return _context.Room.Any(e => e.ID == id);
+        }
+        
+        public IActionResult SearchRooms()
+        {
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> SearchRooms(SearchRooms roomSearch)
+        {
+            // prepare the parameters to be inserted into the query
+            var beds = new SqliteParameter("beds", roomSearch.BedCount);
+            var checkIn = new SqliteParameter("checkInS", roomSearch.CheckIn);
+            var checkOut = new SqliteParameter("checkOutS", roomSearch.CheckOut);
+
+            // Construct the query to get the movies watched by Moviegoer A but not Moviegoer B
+            // Use placeholders with the same names as the corresponding parameters
+            var roomsAvailable = _context.Room.FromSql("select * from [Room] "
+                                + "where [Room].BedCount = @beds and [Room].ID not in "
+                                + "(select [Room].ID from [Room] inner join [Booking] on [Room].ID = [Booking].RoomID "
+                                + "where @checkInS < [Booking].CheckOut and [Booking].CheckIn < @checkOutS)", beds, checkIn, checkOut)
+                            .Select(ro => new Room { ID = ro.ID, Level = ro.Level, BedCount = ro.BedCount, Price = ro.Price});
+
+            // Run the query and save the results in ViewBag for passing to view
+            ViewBag.Rooms = await roomsAvailable.ToListAsync();
+
+            // invoke the view with the ViewModel object
+            return View(roomSearch);
         }
     }
 }
