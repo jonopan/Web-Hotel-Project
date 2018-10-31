@@ -13,34 +13,47 @@
     <thead>
         <tr>
             <th>
-                 <a asp-action="Index" asp-route-sortorder="@ViewData["CheckInOrder"]">
-                    @Html.DisplayNameFor(model => model.CheckIn)
-                  </a>
+                @Html.DisplayNameFor(model => model.TheCustomer.Surname)
             </th>
             <th>
-                 <a asp-action="Index" asp-route-sortorder="@ViewData["CheckOutOrder"]">
-                    @Html.DisplayNameFor(model => model.CheckOut)
-                 </a>
-            </th>
-            <th>
-                 <a asp-action="Index" asp-route-sortorder="@ViewData["NextCostOrder"]">
-                    @Html.DisplayNameFor(model => model.Cost)
-                 </a>
-            </th>
-            <th>
-                    @Html.DisplayNameFor(model => model.TheCustomer)
+                @Html.DisplayNameFor(model => model.TheCustomer.GivenName)
             </th>
             <th>
                 <a asp-action="Index" asp-route-sortorder="@ViewData["NextRoomOrder"]">
                     @Html.DisplayNameFor(model => model.TheRoom)
                 </a>
             </th>
+            <th>
+                <a asp-action="Index" asp-route-sortorder="@ViewData["CheckInOrder"]">
+                    @Html.DisplayNameFor(model => model.CheckIn)
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortorder="@ViewData["CheckOutOrder"]">
+                    @Html.DisplayNameFor(model => model.CheckOut)
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortorder="@ViewData["NextCostOrder"]">
+                    @Html.DisplayNameFor(model => model.Cost)
+                </a>
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
         <tr>
+            <td>
+                @Html.DisplayFor(model => item.TheCustomer.Surname)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.TheCustomer.GivenName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TheRoom.Level)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CheckIn)
             </td>
@@ -51,19 +64,10 @@
                 @Html.DisplayFor(modelItem => item.Cost)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TheCustomer.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TheRoom.Level)
-            </td>
-            @*
-            <td>
                 <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
             </td>
-            *@
         </tr>
-}
+        }
     </tbody>
 </table>

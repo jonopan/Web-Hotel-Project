@@ -12,7 +12,7 @@ using WebHotel.Models;
 
 namespace WebHotel.Controllers
 {
-    [Authorize(Roles = "Customers")]
+    [Authorize(Roles = "Customers, Admin")]
     public class BookingsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -96,6 +96,7 @@ namespace WebHotel.Controllers
         // POST: Bookings/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,RoomID,CustomerEmail,CheckIn,CheckOut,Cost")] Booking booking)
