@@ -38,5 +38,11 @@ namespace WebHotel.Models
         public Room TheRoom { get; set; }
         public Customer TheCustomer { get; set; }
 
+        public ICollection<CalStats> TheCalStats { get; set; }
+
+
+
+
+
     }
 }
