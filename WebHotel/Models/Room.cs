@@ -16,7 +16,7 @@ namespace WebHotel.Models
         [RegularExpression(@"^[G|1-3]{1}$", ErrorMessage = "Please enter the level G or 1 or 2 or 3!")]
         public string Level { get; set; }
 
-        [Display(Name = "BedCount")]
+        [Display(Name = "Bed Count")]
         [Required]
         [RegularExpression(@"^[1-3]{1}$", ErrorMessage = "Please enter the number of bed in the room can only be 1 or 2 or 3!")]
         public int BedCount { get; set; }

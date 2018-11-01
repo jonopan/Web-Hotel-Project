@@ -20,13 +20,13 @@ namespace WebHotel.Models
         // foreign key
         public string CustomerEmail { get; set; }
 
-        [Display(Name = "CheckIn")]
+        [Display(Name = "Check In")]
         [Required(ErrorMessage = "Please enter the check in date")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
         public DateTime CheckIn { get; set; }
 
-        [Display(Name = "CheckOut")]
+        [Display(Name = "Check Out")]
         [Required(ErrorMessage = "Please enter the check out date")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]

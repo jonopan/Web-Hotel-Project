@@ -1,13 +1,18 @@
 ﻿@model IEnumerable<WebHotel.Models.Booking>
 
+@using Microsoft.AspNetCore.Identity
+
+@inject UserManager<ApplicationUser> UserManager
+
 @{
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>Your Bookings</h2>
 
+<h4>All bookings under user: <b>@UserManager.GetUserName(User) </b></h4>
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Book A Room</a>
 </p>
 <table class="table">
     <thead>
@@ -38,32 +43,31 @@
                     @Html.DisplayNameFor(model => model.Cost)
                 </a>
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.TheCustomer.Surname)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.TheCustomer.GivenName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TheRoom.Level)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CheckIn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CheckOut)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cost)
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => item.TheCustomer.Surname)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.TheCustomer.GivenName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TheRoom.ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CheckIn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CheckOut)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cost)
+                </td>
+            </tr>
         }
     </tbody>
 </table>
