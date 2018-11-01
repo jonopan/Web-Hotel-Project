@@ -89,7 +89,7 @@ namespace WebHotel.Controllers
         public IActionResult Create()
         {
             ViewData["CustomerEmail"] = new SelectList(_context.Customer, "Email", "Email");
-            ViewData["RoomID"] = new SelectList(_context.Set<Room>(), "ID", "Level");
+            ViewData["RoomID"] = new SelectList(_context.Set<Room>(), "ID", "ID");
             return View();
         }
 
@@ -118,7 +118,7 @@ namespace WebHotel.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CustomerEmail"] = new SelectList(_context.Customer, "Email", "Email", booking.CustomerEmail);
-            ViewData["RoomID"] = new SelectList(_context.Set<Room>(), "ID", "Level", booking.RoomID);
+            ViewData["RoomID"] = new SelectList(_context.Set<Room>(), "ID", "ID", booking.RoomID);
             return View(booking);
         }
 
