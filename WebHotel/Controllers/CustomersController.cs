@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using WebHotel.Data;
 using WebHotel.Models;
 
+
 namespace WebHotel.Controllers
 {
     [Authorize(Roles = "Customers, Admin")]
@@ -75,18 +76,21 @@ namespace WebHotel.Controllers
             return View(customer);
         }
 
+        
+
         // GET: PostCode/CalStats
         public async Task<IActionResult> CalStats()
         {
+
             string _email = User.FindFirst(ClaimTypes.Name).Value;
 
-            var list_Customer = _context.Customer.Include(c => c.TheCalStats).Where(c => c.Email == _email).GroupBy(c => c.PostCode);
+            var list_Customer = _context.Customer.GroupBy(c => c.PostCode);
 
             var nameStats = list_Customer.Select(g => new CalStats { PostCode = g.Key.ToString(), NumberOfCustomers = g.Count() });
 
-
             // pass the list of NameStatistic objects to view
-            return View(await nameStats.ToListAsync());
+            return View(await nameStats.ToListAsync()); 
+
         }
 
         private bool CustomerExists(string id)
