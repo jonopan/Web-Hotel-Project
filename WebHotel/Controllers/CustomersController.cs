@@ -76,21 +76,6 @@ namespace WebHotel.Controllers
             return View(customer);
         }
 
-        
-
-        // GET: PostCode/CalStats
-        public async Task<IActionResult> CalStats()
-        {
-
-            var list_Customer = _context.Customer.GroupBy(c => c.PostCode);
-
-            var nameStats = list_Customer.Select(g => new CalStats { PostCode = g.Key.ToString(), NumberOfCustomers = g.Count() });
-
-            // pass the list of NameStatistic objects to view
-            return View(await nameStats.ToListAsync()); 
-
-        }
-
         private bool CustomerExists(string id)
         {
             return _context.Customer.Any(e => e.Email == id);
