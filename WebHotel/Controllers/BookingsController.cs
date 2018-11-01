@@ -213,15 +213,14 @@ namespace WebHotel.Controllers
         {
             string _email = User.FindFirst(ClaimTypes.Name).Value;
 
-            var list_Booking = _context.Booking.Include(m => m.TheCalStats).Where(m => m.CustomerEmail == _email).GroupBy(m => m.RoomID);
 
-            var nameStats = list_Booking.Select(g => new CalStats { RoomID = g.Key.ToString(), NumberOfBookings = g.Count() });
+            var list_Booking = _context.Booking.GroupBy(c => c.RoomID);
 
+            var nameStats2 = list_Booking.Select(g => new CalStats { RoomID = g.Key.ToString(), NumberOfBookings = g.Count() });
 
             // pass the list of NameStatistic objects to view
-            return View(await nameStats.ToListAsync());
+            return View(await nameStats2.ToListAsync());
         }
-
         private bool BookingExists(int id)
         {
             return _context.Booking.Any(e => e.ID == id);

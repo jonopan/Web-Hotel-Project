@@ -38,5 +38,6 @@ namespace WebHotel.Models
         // Navigation properties
         public ICollection<Booking> TheBookings { get; set; }
         public ICollection<CalStats> TheCalStats { get; set; }
+
     }
 }
