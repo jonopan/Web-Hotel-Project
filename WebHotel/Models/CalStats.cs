@@ -8,8 +8,7 @@ namespace WebHotel.Models
 {
     public class CalStats
     {
-        [Key, Required]
-        public string Email { get; set; }
+        public int ID { get; set; }
 
         [Display(Name = "Post Code")]
         public string PostCode { get; set; }

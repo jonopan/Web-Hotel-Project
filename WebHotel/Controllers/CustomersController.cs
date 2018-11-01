@@ -82,8 +82,6 @@ namespace WebHotel.Controllers
         public async Task<IActionResult> CalStats()
         {
 
-            string _email = User.FindFirst(ClaimTypes.Name).Value;
-
             var list_Customer = _context.Customer.GroupBy(c => c.PostCode);
 
             var nameStats = list_Customer.Select(g => new CalStats { PostCode = g.Key.ToString(), NumberOfCustomers = g.Count() });

@@ -4,31 +4,81 @@
     ViewData["Title"] = "Statistics";
 }
 
+<h2>Customers distribution with respect to postcodes</h2>
+<br />
+
+
+<div>
+    @if (ViewBag.PostCodeStats.Count == 0)
+    {
+        <h4>There are no customers</h4>
+    }
+    else
+    {
+        <table class="table">
+            @* .table is a Bootstrap class giving table styles *@
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(m => m.PostCode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.NumberOfCustomers)
+                </th>
+            </tr>
+
+            @foreach (var item in ViewBag.PostCodeStats)
+            {
+                <tr>
+                    <td>
+                        @item.PostCode
+                    </td>
+                    <td>
+                        @item.NumberOfCustomers
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+</div>
+
+
+<hr />
+
 <h2>Booking distribution with respect to rooms</h2>
 <br />
 
-<div>
-    <table class="table">
-        @* .table is a Bootstrap class giving table styles *@
-        <tr>
-            <th>
-                @Html.DisplayNameFor(m => m.RoomID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(m => m.NumberOfBookings)
-            </th>
-        </tr>
 
-        @foreach (var item in Model)
-        {
+<div>
+    @if (ViewBag.RoomBookingStats.Count == 0)
+    {
+        <h4>There are no bookings</h4>
+    }
+    else
+    {
+        <table class="table">
+            @* .table is a Bootstrap class giving table styles *@
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RoomID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NumberOfBookings)
-                </td>
+                <th>
+                    @Html.DisplayNameFor(m => m.RoomID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.NumberOfBookings)
+                </th>
             </tr>
-        }
-    </table>
+
+            @foreach (var item in ViewBag.RoomBookingStats)
+            {
+                <tr>
+                    <td>
+                        @item.RoomID
+                    </td>
+                    <td>
+                        @item.NumberOfBookings
+                    </td>
+                </tr>
+            }
+        </table>
+    }
 </div>
+
+

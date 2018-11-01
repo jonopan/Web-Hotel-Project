@@ -273,15 +273,18 @@ namespace WebHotel.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CalStats()
         {
-            string _email = User.FindFirst(ClaimTypes.Name).Value;
 
 
+            var list_Customer = _context.Customer.GroupBy(c => c.PostCode);
             var list_Booking = _context.Booking.GroupBy(c => c.RoomID);
 
-            var nameStats2 = list_Booking.Select(g => new CalStats { RoomID = g.Key.ToString(), NumberOfBookings = g.Count() });
+            var postStats = list_Customer.Select(g => new CalStats { PostCode = g.Key.ToString(), NumberOfCustomers = g.Count() });
+            var bookingStats = list_Booking.Select(g => new CalStats { RoomID = g.Key.ToString(), NumberOfBookings = g.Count() });
 
-            // pass the list of NameStatistic objects to view
-            return View(await nameStats2.ToListAsync());
+            ViewBag.PostCodeStats = await postStats.ToListAsync();
+            ViewBag.RoomBookingstats = await bookingStats.ToListAsync();
+
+            return View();
         }
 
         private bool BookingExists(int id)
