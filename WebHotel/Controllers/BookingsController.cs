@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebHotel.Data;
 using WebHotel.Models;
+// add this to support the type SqliteParameter 
+using Microsoft.Data.Sqlite;
 
 namespace WebHotel.Controllers
 {
@@ -101,7 +103,22 @@ namespace WebHotel.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,RoomID,CustomerEmail,CheckIn,CheckOut,Cost")] Booking booking)
         {
-            if (ModelState.IsValid)
+            var roId = new SqliteParameter("roId", booking.RoomID);
+            var checkIn = new SqliteParameter("checkInS", booking.CheckIn);
+            var checkOut = new SqliteParameter("checkOutS", booking.CheckOut);
+
+            bool checkDates = booking.CheckIn < booking.CheckOut;
+
+            var roomsAvailable = _context.Room.FromSql("select * from [Room] "
+                    + "where [Room].ID = @roId and [Room].ID not in "
+                    + "(select [Room].ID from [Room] inner join [Booking] on [Room].ID = [Booking].RoomID "
+                    + "where @checkInS < [Booking].CheckOut and [Booking].CheckIn < @checkOutS)", roId, checkIn, checkOut)
+                .Select(ro => new Room { ID = ro.ID, Level = ro.Level});
+
+            var Rooms = await roomsAvailable.ToListAsync();
+
+
+            if (ModelState.IsValid && Rooms.Count != 0 && checkDates)
             {
                 // Shows only the current login user booking details
                 string _email = User.FindFirst(ClaimTypes.Name).Value;
@@ -116,6 +133,14 @@ namespace WebHotel.Controllers
                 _context.Add(booking);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+            }
+            if (!checkDates)
+            {
+                ViewBag.DateError = "Sorry, check out date cannot be less than or the same as check in date";
+            }
+            else if(Rooms.Count == 0)
+            {
+                ViewBag.Error = "Sorry, This room is not available for your selected time period";
             }
             ViewData["CustomerEmail"] = new SelectList(_context.Customer, "Email", "Email", booking.CustomerEmail);
             ViewData["RoomID"] = new SelectList(_context.Set<Room>(), "ID", "ID", booking.RoomID);

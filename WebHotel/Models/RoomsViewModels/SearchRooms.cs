@@ -10,15 +10,15 @@ namespace WebHotel.Models.RoomsViewModels
     {
         public int BedCount { get; set; }
 
-        [Display(Name = "CheckIn")]
+        [Display(Name = "Check In")]
         [Required(ErrorMessage = "Please enter the check in date")]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
         [DataType(DataType.Date)]
         public DateTime CheckIn { get; set; }
 
-        [Display(Name = "CheckOut")]
+        [Display(Name = "Check Out")]
         [Required(ErrorMessage = "Please enter the check out date")]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
         [DataType(DataType.Date)]
         public DateTime CheckOut { get; set; }
 

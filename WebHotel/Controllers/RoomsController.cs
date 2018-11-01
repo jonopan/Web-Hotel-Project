@@ -162,24 +162,33 @@ namespace WebHotel.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> SearchRooms(SearchRooms roomSearch)
         {
+            bool checkDates = roomSearch.CheckIn < roomSearch.CheckOut;
+
             // prepare the parameters to be inserted into the query
-            var beds = new SqliteParameter("beds", roomSearch.BedCount);
-            var checkIn = new SqliteParameter("checkInS", roomSearch.CheckIn);
-            var checkOut = new SqliteParameter("checkOutS", roomSearch.CheckOut);
+            if (ModelState.IsValid && checkDates)
+            {
+                var beds = new SqliteParameter("beds", roomSearch.BedCount);
+                var checkIn = new SqliteParameter("checkInS", roomSearch.CheckIn);
+                var checkOut = new SqliteParameter("checkOutS", roomSearch.CheckOut);
 
-            // Construct the query to get the movies watched by Moviegoer A but not Moviegoer B
-            // Use placeholders with the same names as the corresponding parameters
-            var roomsAvailable = _context.Room.FromSql("select * from [Room] "
-                                + "where [Room].BedCount = @beds and [Room].ID not in "
-                                + "(select [Room].ID from [Room] inner join [Booking] on [Room].ID = [Booking].RoomID "
-                                + "where @checkInS < [Booking].CheckOut and [Booking].CheckIn < @checkOutS)", beds, checkIn, checkOut)
-                            .Select(ro => new Room { ID = ro.ID, Level = ro.Level, BedCount = ro.BedCount, Price = ro.Price});
+                // Use placeholders with the same names as the corresponding parameters
+                var roomsAvailable = _context.Room.FromSql("select * from [Room] "
+                                    + "where [Room].BedCount = @beds and [Room].ID not in "
+                                    + "(select [Room].ID from [Room] inner join [Booking] on [Room].ID = [Booking].RoomID "
+                                    + "where @checkInS < [Booking].CheckOut and [Booking].CheckIn < @checkOutS)", beds, checkIn, checkOut)
+                                .Select(ro => new Room { ID = ro.ID, Level = ro.Level, BedCount = ro.BedCount, Price = ro.Price });
 
-            // Run the query and save the results in ViewBag for passing to view
-            ViewBag.Rooms = await roomsAvailable.ToListAsync();
+                // Run the query and save the results in ViewBag for passing to view
+                ViewBag.Rooms = await roomsAvailable.ToListAsync();
+                return View(roomSearch);
+            }
+            if (!checkDates)
+            {
+                ViewBag.DateError = "Sorry, check out date cannot be less than or the same as check in date";
+            }
 
             // invoke the view with the ViewModel object
-            return View(roomSearch);
+            return View();
         }
     }
 }
